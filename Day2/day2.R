@@ -47,3 +47,32 @@ sg <- strat.guide %>% left_join(encrypted.plays)
 # tot score according to strat guide
 sum(sg$tot.score)
 
+# 11475 - correct
+
+# -----------------#
+# Assumed 2nd column wrong!
+# col2 (outcome status): X for loose, Y for draw, and Z for win
+game.guide <- play.scores # for keeping things separate in my head
+
+game.guide$win.status <- factor(game.guide$oc.score, labels = c("X", "Y", "Z"))
+game.guide$shh.them <- rep(c("A", "B", "C"), 3)
+
+## update guide names
+names(example.strat.guide)[2] <- names(strat.guide)[2] <- "win.status"
+
+## re-test example guide
+sg.test <- example.strat.guide %>%
+  left_join(game.guide, by=c("win.status", "shh.them"))
+sum(sg.test$tot.score) # 12 correct
+
+## recalculate actual guide
+sg <- strat.guide %>%
+  left_join(game.guide, by=c("win.status", "shh.them"))
+
+# tot score according to strat guide
+sum(sg$tot.score)
+
+#37500 too high.  -- was merging wrong table
+# 16862 - correct 2nd try
+
+
