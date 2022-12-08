@@ -15,10 +15,13 @@ ex <- c(
 '2-6,4-8',
 "8-50,49-82")
 
+a <- str_split(ex, ",|-" , simplify = TRUE)
+
 # real list
 inlist <- readLines("Day4/input.txt")
-
 a <- str_split(inlist, ",|-" , simplify = TRUE)
+
+# convert to numbered list
 lst <- matrix(as.numeric(a), nrow=nrow(a), byrow=FALSE)
 
 # check for overlap
@@ -32,6 +35,11 @@ cbind(lst, len)
 # 305 - yes
 
 # --- part 2 ---
+# number of pairs that overlap at all.
+any.olap <- rep(NA, NROW(lst))
 
-
+for (i in 1:NROW(lst)){
+  any.olap[i] <- length(intersect(lst[i,1]:lst[i,2], lst[i,3]:lst[i,4])) > 0
+}
+sum(any.olap)
 
